@@ -35,8 +35,19 @@ function agregarCurso(e) {
 function eliminarCurso(e) {
     if(e.target.classList.contains('borrar-curso')) {
         const cursoId = e.target.getAttribute('data-id');
-        /* Elimina del arreglo de articulos Carrito por el data-id */
-        articulosCarrito = articulosCarrito.filter(curso => curso.id !== cursoId);
+        
+        /* Actualizamos la cantidad */
+        const cursos = articulosCarrito.map(curso => {
+            if (curso.id === cursoId) {
+                if (curso.cantidad !== 0) {
+                    curso.cantidad--;
+                }
+            }
+            return curso;
+        });
+        
+        const cursosFiltrados = cursos.filter(curso => curso.cantidad !== 0);
+        articulosCarrito = [...cursosFiltrados];
 
         carritoHTML();
     }
