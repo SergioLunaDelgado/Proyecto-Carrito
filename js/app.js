@@ -11,8 +11,16 @@ cargarEventListeners();
 function cargarEventListeners() {
     /* Cuando agregas un curso presionando "Agregar al carrito" */
     listaCursos.addEventListener('click', agregarCurso);
+
     /* Elimina curso */
     carrito.addEventListener('click', eliminarCurso);
+
+    /* Muestra los cursos de localStorage */
+    document.addEventListener('DOMContentLoaded', () => {
+        articulosCarrito = JSON.parse(localStorage.getItem('carrito') || []);
+        carritoHTML();
+    });
+
     /* Vaciar carrito */
     vaciarCarrito.addEventListener('click', () => {
         articulosCarrito = []; /* resetear el arreglo */
@@ -20,10 +28,6 @@ function cargarEventListeners() {
     });
 }
 
-/* 
-    Mis comentarios con respecto a esta funcion:
-    * para evitar usar el preventDefault la etiqueta html debe ser button y no a 
-*/
 function agregarCurso(e) {
     e.preventDefault();
     if(e.target.classList.contains('agregar-carrito')) {
@@ -114,6 +118,13 @@ function carritoHTML() {
         /* Agregar el html en el tbody */
         contenedorCarrito.appendChild(row);
     });
+
+    /* Agregar el carrito de compras al storage */
+    sincronizarStorage();
+}
+
+function sincronizarStorage() {
+    localStorage.setItem('carrito', JSON.stringify(articulosCarrito));
 }
 
 /* Eliminar los cursos del tbody */
